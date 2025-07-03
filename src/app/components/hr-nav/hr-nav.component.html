@@ -13,7 +13,7 @@
             <p-toggleButton [(ngModel)]="mode" onIcon="pi pi-sun" offIcon="pi pi-moon" onLabel="Light" offLabel="Dark"
                 (onChange)="toggleDarkMode()">
                 ></p-toggleButton>
-            <p-toggleswitch [(ngModel)]="isRtl">
+            <p-toggleswitch [(ngModel)]="isRtl ">
                 <ng-template #handle let-checked="checked">
                     @if (isRtl) {R} @else {L}
                 </ng-template>

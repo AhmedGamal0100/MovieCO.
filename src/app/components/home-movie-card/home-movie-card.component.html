@@ -1,0 +1,8 @@
+<div class="trailer-container">
+    <div *ngIf="loading()" class="loading-placeholder">
+        <div class="spinner"></div>
+        <p>Loading trailer...</p>
+    </div>
+    <iframe *ngIf="videoUrl" [attr.src]="videoUrl" width="400" height="280" frameborder="0" class="url" allowfullscreen
+        (load)="onTrailerLoaded()"></iframe>
+</div>

@@ -15,13 +15,8 @@ export const ApiStore = signalStore(
     nowPlayingMovies: [{}],
     popularMovies: [{}],
     upComingMovies: [{}],
+    moviesIds: [0]
   }),
-
-  withComputed((state) => ({
-    nowPlayingMovies: state.nowPlayingMovies,
-    popularMovies: state.popularMovies,
-    upComingMovies: state.upComingMovies
-  })),
 
   withMethods((state) => {
     return {
@@ -44,6 +39,11 @@ export const ApiStore = signalStore(
       subscriptionPopular = apiService.getMoviesPopular().subscribe({
         next: (data: any) => {
           patchState(state, { popularMovies: data.results as (IMovie[]) });
+          patchState(state, {
+            moviesIds: [
+              ...data.results.map((movie: IMovie) => movie.id)
+            ]
+          });
         },
         error: err => console.error('Failed to load API', err)
       });

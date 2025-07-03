@@ -28,7 +28,7 @@ export class HrNavComponent {
   searchValue = signal<string | undefined>(undefined);
   mode = <boolean>(false);
   isRtl = <boolean>(false);
-
+  
   constructor() {
     effect(() => {
       this.notificationsList.set(
