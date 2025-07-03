@@ -41,8 +41,4 @@ export class HomeMovieCardComponent {
       error: err => console.error('Failed to load API', err)
     });
   }
-  onTrailerLoaded() {
-  this.loading.set(false);
-}
-
 }

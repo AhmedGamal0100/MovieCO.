@@ -1,29 +1,25 @@
 <nav class="horizontal-nav border-300 border-bottom-1">
     <div class="horizontal-nav__container">
-        <p-button (click)="navToggle.setVisibility()" icon="pi pi-bars" />
+        <p-button (click)="navToggle.setVisibility()" icon="pi pi-bars" [size]="'large'" />
         <p-floatlabel variant="on" class="horizontal-nav__search w-6">
             <p-iconfield>
                 <p-inputicon class="pi pi-search" />
-                <input pInputText id="on_label" [(ngModel)]="searchValue" autocomplete="off" class="w-full" />
+                <input pInputText id="on_label" [(ngModel)]="searchValue" autocomplete="off" class="w-full" [pSize]="'large'"   />
             </p-iconfield>
             <label for="on_label">Search movie.</label>
         </p-floatlabel>
         <div class="horizontal-nav__btns">
             <!-- <button (click)="push()">X</button> -->
             <p-toggleButton [(ngModel)]="mode" onIcon="pi pi-sun" offIcon="pi pi-moon" onLabel="Light" offLabel="Dark"
-                (onChange)="toggleDarkMode()">
-                ></p-toggleButton>
-            <p-toggleswitch [(ngModel)]="isRtl ">
-                <ng-template #handle let-checked="checked">
-                    @if (isRtl) {R} @else {L}
-                </ng-template>
-            </p-toggleswitch>
+                (onChange)="toggleDarkMode()" [size]="'large'"></p-toggleButton>
+            <p-toggleButton [(ngModel)]="isRtl" onLabel="RTL" offLabel="LTR" [size]="'large'"></p-toggleButton>
+
             <div class="horizontal-nav__notification">
                 @if (notificationLength()> 0) {
                 <span class="horizontal-nav__badge border-3 border-50 bg-red-500">
                 </span>
                 }
-                <p-button type="button" [icon]="'pi pi-bell'" (onClick)="toggle($event)" />
+                <p-button type="button" [icon]="'pi pi-bell'" (onClick)="toggle($event)" [size]="'large'" />
                 <p-popover #op>
                     <div class="w-20rem">
                         <span class="font-medium block mb-2">Notification List:</span>

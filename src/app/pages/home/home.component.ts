@@ -4,10 +4,11 @@ import { VerNavComponent } from "../../components/ver-nav/ver-nav.component";
 import { RouterOutlet } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-home',
-  imports: [HrNavComponent, VerNavComponent, RouterOutlet],
+  imports: [HrNavComponent, VerNavComponent, RouterOutlet, FooterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

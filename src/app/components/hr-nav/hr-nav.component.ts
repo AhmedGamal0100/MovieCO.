@@ -59,4 +59,8 @@ export class HrNavComponent {
   // push() {
   //   this._notificationStore.pushNotification("New notification");
   // }
+  onDestroy() {
+    this.mode = false;
+    this.isRtl = false;
+  }
 }

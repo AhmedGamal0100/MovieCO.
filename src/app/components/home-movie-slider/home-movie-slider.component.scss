@@ -1,0 +1,43 @@
+.trailer-slider {
+    padding-block: 2rem;
+    background-image: url('/imgs/login-background.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border: 1px solid var(--p-surface-500);
+
+    .trailer-slider__bg {
+        z-index: 0;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        // min-height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .trailer-slider__title {
+        z-index: 2;
+        position: relative;
+        padding-inline: 3rem;
+
+        // margin-bottom: 1rem;
+        h2 {
+            font-size: 5rem;
+            color: #fff;
+            transition: 0.5s;
+        }
+
+        h2:hover {
+            color: var(--p-primary-500);
+        }
+    }
+
+    .trailer-slider__slider {
+        z-index: 2;
+        position: relative;
+        padding-inline: 2rem;
+    }
+}

@@ -1,35 +1,31 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { HomeCardsComponent } from "../home-cards/home-cards.component";
 import { ApiStore } from '../../store/api.store';
-import { IMovie } from '../../interfaces/movie';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
-
+import { HomeTvCardComponent } from "../home-tv-card/home-tv-card.component";
+import { ITv } from '../../interfaces/tv';
 
 @Component({
-  standalone: true,
-  selector: 'app-home-cards-slider',
-  imports: [HomeCardsComponent, Carousel, ButtonModule],
-  templateUrl: './home-cards-slider.component.html',
-  styleUrl: './home-cards-slider.component.scss',
-  providers: []
-
+  selector: 'app-home-tvshows-slider',
+  imports: [Carousel, ButtonModule, HomeTvCardComponent],
+  templateUrl: './home-tvshows-slider.component.html',
+  styleUrl: './home-tvshows-slider.component.scss'
 })
-export class HomeCardsSliderComponent {
+export class HomeTvshowsSliderComponent {
   private _apiStore = inject(ApiStore);
-  movieCardObjs = signal<IMovie[]>([{
+  showCardObjs = signal<ITv[]>([{
     adult: false,
     backdrop_path: '',
     genre_ids: [],
     id: 0,
+    genre_country: [],
     original_language: '',
-    original_title: '',
+    original_name: '',
     overview: '',
     popularity: 0,
     poster_path: '',
-    release_date: '',
-    title: '',
-    video: false,
+    first_air_date: '',
+    name: '',
     vote_average: 0,
     vote_count: 0
   }]);
@@ -61,7 +57,7 @@ export class HomeCardsSliderComponent {
   }
   constructor() {
     effect(() => {
-      this.movieCardObjs.set((this._apiStore.nowPlayingMovies()) as (IMovie[]));
+      this.showCardObjs.set((this._apiStore.tvShow()) as (ITv[]));
     })
   }
 }

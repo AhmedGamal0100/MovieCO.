@@ -58,7 +58,6 @@ export class HomeUpcomingSliderComponent {
   constructor() {
     effect(() => {
       this.movieCardObjs.set((this._apiStore.upComingMovies()) as (IMovie[]));
-      console.log(this.movieCardObjs());
     })
   }
 }

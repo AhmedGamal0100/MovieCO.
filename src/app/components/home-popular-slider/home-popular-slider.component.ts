@@ -58,7 +58,6 @@ export class HomePopularSliderComponent {
   constructor() {
     effect(() => {
       this.movieCardObjs.set((this._apiStore.popularMovies()) as (IMovie[]));
-      console.log(this.movieCardObjs());
     })
   }
 }

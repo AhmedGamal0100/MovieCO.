@@ -1,0 +1,102 @@
+.footer {
+    padding: 2rem;
+    background-image: url('/imgs/login-background.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border-top: 1px solid var(--p-surface-500);
+
+    .footer__bg {
+        z-index: 0;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(12px);
+        // min-height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .footer__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 97%;
+        margin: auto;
+    }
+
+    .footer__contrast-span {
+        background-color: var(--p-slate-500);
+        color: #fff
+    }
+
+    ul {
+        padding-inline: 2rem;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        li {
+            display: flex;
+            gap: 1rem;
+        }
+
+        i {
+            color: var(--p-surface-200);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: var(--p-primary-500);
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--p-surface-200);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: var(--p-primary-500);
+            }
+        }
+    }
+
+    .footer__left {
+        align-items: center;
+    }
+
+    .footer__left,
+    .footer__right {
+        z-index: 2;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+        color: var(--p-surface-200);
+
+    }
+
+    p {
+        font-size: 1.5rem;
+        color: var(--p-surface-200);
+    }
+
+    h4 {
+        font-size: 2rem;
+        color: var(--p-surface-200);
+        background-color: black;
+        display: inline;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+
+    }
+}

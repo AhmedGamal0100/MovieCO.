@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 let subscription = new Subscription
 let subscriptionPopular = new Subscription
 let subscriptionUpComing = new Subscription
+let subscriptionTvShow = new Subscription
 
 export const ApiStore = signalStore(
   { providedIn: 'root' },
@@ -15,7 +16,8 @@ export const ApiStore = signalStore(
     nowPlayingMovies: [{}],
     popularMovies: [{}],
     upComingMovies: [{}],
-    moviesIds: [0]
+    moviesIds: [0],
+    tvShow: [{}]
   }),
 
   withMethods((state) => {
@@ -56,12 +58,21 @@ export const ApiStore = signalStore(
         error: err => console.error('Failed to load API', err)
       });
 
+      // Now Tv Show
+      subscriptionUpComing = apiService.getTvShows().subscribe({
+        next: (data: any) => {
+          patchState(state, { tvShow: data.results as (IMovie[]) });
+        },
+        error: err => console.error('Failed to load API', err)
+      });
+
     },
 
     onDestroy() {
       subscription.unsubscribe()
       subscriptionPopular.unsubscribe()
       subscriptionUpComing.unsubscribe()
+      subscriptionTvShow.unsubscribe()
     }
   })
 );

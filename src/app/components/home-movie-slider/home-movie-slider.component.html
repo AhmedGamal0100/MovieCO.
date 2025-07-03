@@ -1,8 +1,20 @@
-<p-carousel [value]="movieIds()" [numVisible]="3" [numScroll]="2" [showIndicators]="false" [circular]="true"
-    [responsiveOptions]="responsiveOptions">
-    <ng-template pTemplate="item" let-movie>
-        <div>
-            <app-home-movie-card [movieCardId]="movie"></app-home-movie-card>
+<section class="trailer-slider">
+    <div class="trailer-slider__container">
+        <div class="trailer-slider__title">
+            <a href="">
+                <h2>Latest Trailers</h2>
+            </a>
         </div>
-    </ng-template>
-</p-carousel>
+        <div class="trailer-slider__bg"></div>
+        <div class="trailer-slider__slider">
+            <p-carousel [value]="movieIds()" [numVisible]="3" [numScroll]="1" [showNavigators]="false" [circular]="true"
+                [responsiveOptions]="responsiveOptions">
+                <ng-template pTemplate="item" let-movie>
+                    <div>
+                        <app-home-movie-card [movieCardId]="movie"></app-home-movie-card>
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+</section>

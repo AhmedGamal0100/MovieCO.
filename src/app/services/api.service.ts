@@ -25,8 +25,12 @@ export class ApiService {
     return this._http.get(
       `/api/movie/upcoming?language=${lang}&page=${page}`, this.headers);
   }
-  getDetailedMovie(id: number = 1278950) {
+  getTvShows(lang: string = 'en-US', page: number = 1) {
     return this._http.get(
-      `/api/movie/${id}?language=en-US`, this.headers);
+      `/api/tv/top_rated?language=${lang}&page=${page}`, this.headers);
   }
+  // getDetailedMovie(id: number = 1278950) {
+  //   return this._http.get(
+  //     `/api/movie/${id}?language=en-US`, this.headers);
+  // }
 }

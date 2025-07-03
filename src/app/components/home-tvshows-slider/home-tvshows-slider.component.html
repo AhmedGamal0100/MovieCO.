@@ -1,0 +1,19 @@
+<section class="tvshows-slider">
+    <section class="tvshows__container">
+        <div class="tvshows__title">
+            <a href="">
+                <h2>TV Shows</h2>
+            </a>
+        </div>
+        <p-carousel [value]="showCardObjs()" [numVisible]="6" [numScroll]="2" [showIndicators]="false"
+            [circular]="true" [responsiveOptions]="responsiveOptions">
+            <ng-template pTemplate="item" let-show>
+                <button>
+                    <div>
+                        <app-home-tv-card [showCardObj]="show"></app-home-tv-card>
+                    </div>
+                </button>
+            </ng-template>
+        </p-carousel>
+    </section>
+</section>
