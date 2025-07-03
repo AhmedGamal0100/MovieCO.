@@ -1,0 +1,178 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 2rem;
+
+
+    .login {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        min-height: 100vh;
+        display: flex;
+        background-image: url('/imgs/login-background.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat-y;
+    }
+
+
+    .login__bg {
+        z-index: 0;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        min-height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .login-container {
+        z-index: 1;
+        max-width: 800px;
+        max-height: 100vh;
+        width: 80%;
+        margin: auto;
+        padding: 2rem;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+
+        html.my-add-dark & {
+            background-color: #fff;
+            color: var(--p-surface-100);
+        }
+    }
+
+
+    .login-container .title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--p-surface-700);
+
+        html.my-add-dark & {
+            color: var(--p-surface-700);
+        }
+    }
+
+    .login-container .subtitle {
+        color: #666;
+        margin-bottom: 1rem;
+
+
+        html.my-add-dark & {
+            color: var(--p-surface-600);
+        }
+    }
+
+    .recent-logins-cards {
+        display: flex;
+        align-items: center;
+    }
+
+    .login__card {
+        html.my-add-dark & {
+            color: var(--p-surface-900);
+            background: var(--p-surface-100);
+            border: var(--p-surface-300) 1px solid;
+            transition: 0.2s;
+        }
+    }
+
+    .login__card:hover {
+        html.my-add-dark & {
+            background: #fff;
+            border: var(--p-surface-300) 1px solid;
+        }
+    }
+
+    .login__card i {
+        background: var(--p-red-700);
+        padding: 0.5rem;
+        border-radius: 50%;
+        margin-bottom: 0.5rem;
+
+
+        html.my-add-dark & {
+            color: var(--p-surface-900);
+            background: var(--p-surface-300);
+
+            h4 {
+                color: var(--p-surface-100);
+            }
+        }
+    }
+
+    .login__direct-card {
+        transition: 0.2s;
+
+        html.my-add-dark & {
+            color: var(--p-surface-900);
+            background: var(--p-red-400);
+            border: 0;
+        }
+    }
+
+    .login__direct-card:hover {
+        background: var(--p-surface-300);
+        border: var(--p-surface-300) 1px solid;
+
+        html.my-add-dark & {
+            background: var(--p-red-500);
+        }
+    }
+
+    .divider {
+        background-color: var(--p-surface-300);
+        height: 2rem;
+        width: 1px;
+
+        html.my-add-dark & {
+            background: var(--p-surface-700);
+        }
+    }
+
+    .form-box {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .social-logins button {
+        background: 0;
+        border: 0;
+        text-decoration: underline;
+        color: var(--p-surface-900);
+        font-weight: bolder;
+    }
+}
+
+:host ::ng-deep .p-divider-content {
+    padding-inline: 1.25rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+}
+
+:host ::ng-deep .p-divider-content p {
+    background-color: #f9f9f9;
+}

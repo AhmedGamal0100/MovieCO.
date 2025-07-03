@@ -1,0 +1,28 @@
+.vertical-nav__contrast-span {
+    background-color: var(--p-slate-500);
+    color: #fff
+}
+
+.vertical-nav__profile {
+    position: relative;
+    border: 1px solid var(--p-slate-300);
+}
+
+.vertical-nav__profile::after {
+    content: "";
+    position: absolute;
+    height: 2.5rem;
+    width: 1px;
+    background-color: var(--p-slate-300);
+    top: -50%;
+    transform: translateY(42%);
+    left: -1rem;
+}
+
+// .vertical-nav__logout{
+// 
+// }
+
+// .vertical-nav__icon{
+//     
+// }

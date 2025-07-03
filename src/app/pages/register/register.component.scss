@@ -1,0 +1,97 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 2rem;
+
+    .register {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        min-height: 100vh;
+        display: flex;
+        background-image: url('/imgs/login-background.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat-y;
+    }
+
+    .register__bg {
+        z-index: 0;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .register__container {
+        z-index: 1;
+        max-width: 800px;
+        width: 80%;
+        margin: auto;
+        padding: 2rem 4rem;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+
+        html.my-add-dark & {
+            background-color: #fff;
+            color: var(--p-surface-100);
+        }
+    }
+
+    .register__title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--p-red-500);
+
+        html.my-add-dark & {
+            color: var(--p-red-500);
+        }
+    }
+
+    .register__subtitle {
+        color: var(--p-surface-800);
+        margin-bottom: 1rem;
+
+
+        html.my-add-dark & {
+            color: var(--p-surface-500);
+        }
+    }
+
+    .register__divider {
+        background-color: var(--p-surface-300);
+        height: 2rem;
+        width: 1px;
+
+        html.my-add-dark & {
+            background: var(--p-surface-700);
+        }
+    }
+
+    label,
+    p {
+        font-weight: 500;
+
+        html.my-add-dark & {
+            color: var(--p-surface-800);
+            font-weight: 900;
+        }
+    }
+
+}
+
+:host ::ng-deep .p-divider-content {
+    padding-inline: 1.25rem;
+    border-radius: 0.4rem;
+    border: 1px solid #cecece;
+}
+
+:host ::ng-deep .p-divider-content p {
+    background-color: #f9f9f9;
+}

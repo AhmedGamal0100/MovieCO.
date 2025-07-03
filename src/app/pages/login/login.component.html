@@ -1,0 +1,193 @@
+<section class="login">
+    <div class="login__bg"></div>
+    <div class="login-container">
+        <h1 class="title">Welcome back</h1>
+        <p class="subtitle">Join the <b>movie’s</b> largest community</p>
+        <div class="recent-logins">
+            <div class="recent-logins-cards w-12 gap-2 h-6rem p-1 border-1 border-300 border-round-lg">
+                @switch (cardsAccounts().length){
+                @case (0) {
+                <button class="login__card w-4 border-1 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4 border-1 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4 border-1 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                } @case (1) {
+                @for (card of cardsAccounts(); track card.sub) {
+                <button
+                    class="login__direct-card w-4 h-full border-1 border-round-lg border-300 flex justify-content-center align-items-center"
+                    (click)="directLoginFromCard(card)">
+                    <app-easy-login [MovieObj]="card"></app-easy-login>
+                </button>
+                }
+                <button class="login__card w-4  h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4  h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4  h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+
+                } @case (2) {
+                @for (card of cardsAccounts(); track card.sub) {
+                <button
+                    class="login__direct-card w-4 h-full border-1 border-round-lg border-300 flex justify-content-center align-items-center"
+                    (click)="directLoginFromCard(card)">
+                    <app-easy-login [MovieObj]="card"></app-easy-login>
+                </button>
+                }
+                <button class="login__card w-4 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                <button class="login__card w-4 h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                } @case (3) {
+                @for (card of cardsAccounts(); track card.sub) {
+                <button
+                    class="login__direct-card w-4 h-full border-1 border-round-lg border-300 flex justify-content-center align-items-center"
+                    (click)="directLoginFromCard(card)">
+                    <app-easy-login [MovieObj]="card"></app-easy-login>
+                </button>
+                }
+                <button class="login__card w-4  h-full p-button-danger border-1 border-round-lg"
+                    (click)="addToLoginCard(loginFrom)">
+                    <i class="pi pi-plus"></i>
+                    <h4>Add Account</h4>
+                </button>
+                } @case (4) {
+                @for (card of cardsAccounts(); track card.sub) {
+                <button
+                    class="login__direct-card w-4 h-full border-1 border-round-lg border-300 flex justify-content-center align-items-center"
+                    (click)="directLoginFromCard(card)">
+                    <app-easy-login [MovieObj]="card"></app-easy-login>
+                </button>
+                }
+                }
+                }
+            </div>
+        </div>
+        <p-divider align="center" type="solid">
+            <b>Or</b>
+        </p-divider>
+        <form #loginFrom="ngForm" (ngSubmit)="submit(loginFrom)" class="form-box">
+            <div class="flex flex-column align-items-center gap-3">
+                <div class="flex w-11 gap-3">
+                    <div class="w-6 flex flex-column gap-2">
+                        <input pInputText type="text" placeholder="Username or email" ngModel required id="email"
+                            name="email" #email="ngModel" class="w-full" #emailInput />
+                    </div>
+                    <div class="w-6 flex flex-column gap-2">
+                        <input pInputText type="password" placeholder="Password" ngModel required pattern="^.{8,}$"
+                            id="pass" name="password" #password="ngModel" class="w-full" #passInput />
+                    </div>
+                </div>
+                <div class="flex w-11 gap-3 justify-content-center">
+                    <button pButton type="submit" label="Sign In"
+                        class="sign-in-button w-4 sm:w-6 bg-primary-inverse"></button>
+                    <button pButton type="button" label="Create New Account"
+                        class="create-button p-button-danger w-4 sm:w-6" routerLink="/register"></button>
+                </div>
+            </div>
+        </form>
+        <div class="social-logins">
+            <p-divider align="center" type="solid">
+                <b>Or</b>
+            </p-divider>
+            <div class="flex justify-content-center align-items-center w-12 gap-5">
+                <div class="social-icons w-5">
+                    <div #googleBtn></div>
+                </div>
+                <div class="divider"></div>
+                <div class=" flex justify-content-center w-5">
+                    <button (click)="showDialog()" class="login__forgot-pass">Forgot Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card flex justify-center login__dialog">
+        <p-dialog header="Change your password" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+            <form #passChangeFrom="ngForm" (ngSubmit)="submitPassChange(passChangeFrom)">
+
+                <div class="flex flex-column w-12 gap-1 mb-2">
+                    <label for="emailOver" class="font-semibold w-6">Email</label>
+                    <input pInputText ngModel id="emailOver" name="emailOver" required
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #emailOver="ngModel" type="email"
+                        autocomplete="off" placeholder="Email" />
+                    @if (emailOver.touched && emailOver.errors) {
+                    @if (emailOver.getError('required')) {
+                    <p-message variant="outlined" severity="error">Email is required!</p-message>
+                    } @else if (emailOver.getError('pattern')) {
+                    <p-message variant="outlined" severity="error">Invalid email format!</p-message>
+                    }
+                    }
+                </div>
+                <div class="flex flex-column w-12 gap-1 mb-2">
+                    <label for="passwordOVer" class="font-semibold w-12">Password</label>
+                    <input pInputText ngModel id="passwordOver"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[*@%$#]).{8,}$" required name="passwordOver"
+                        #passwordOver="ngModel" type="password" autocomplete="off" name="passwordOver"
+                        [(ngModel)]="passwordValue" placeholder="Password" />
+                    @if (passwordOver.touched && passwordOver.errors) {
+                    @if (passwordOver.getError('required')) {
+                    <p-message variant="outlined" severity="error">Password is required!</p-message>
+                    } @else if (passwordOver.getError('pattern')) {
+                    <p-message variant="outlined" severity="error">Password must contain at least 1 lowercase, 1
+                        uppercase, 1 digit,
+                        special
+                        characters & minimum 8 characters!</p-message>
+                    }
+                    }
+                </div>
+                <div class="flex flex-column w-12 gap-1 mb-4">
+                    <label for="conPassOver" class="font-semibold w-12">Confirm Password</label>
+                    <input pInputText ngModel id="confPassOver" name="confPassOver" required #confPassOver="ngModel"
+                        type="password" autocomplete="off" [(ngModel)]="confirmPasswordValue"
+                        placeholder="Confirm Password" />
+                    @if (confPassOver.touched && confPassOver.errors) {
+                    @if (confPassOver.getError('required')) {
+                    <p-message variant="outlined" severity="error">Confirm Password is required!</p-message>
+                    }
+                    } @else if (passwordValue !== confirmPasswordValue && confPassOver.touched) {
+                    <p-message variant="outlined" severity="error">Passwords don't match!</p-message>
+                    }
+                </div>
+                <div class="flex justify-content-center gap-2">
+                    <button type="button" pButton (click)="visible = false"
+                        class="w-4 b-primary-inverse">Cancel</button>
+                    <button type="submit" pButton class="w-4 p-button-danger">Save</button>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+    <div class="card flex justify-center gap-2">
+        <p-toast />
+    </div>
+</section>

@@ -1,0 +1,12 @@
+.login-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+
+    img {
+        width: 50px;
+        border-radius: 50%;
+    }
+}

@@ -1,0 +1,167 @@
+<div class="register">
+    <div class="register__bg"></div>
+    <div class="register__container flex flex-column gap-2">
+        <h1 class="register__title">Register</h1>
+        <p class="register__subtitle">Welcome with us!</p>
+        <form [formGroup]="registerForm" (ngSubmit)="submit()" class="flex flex-column gap-2">
+            <div class="flex flex-column gap-2">
+                <div class="flex justify-content-center align-items-center">
+                    <label for="name" class="w-3 text-left">Name</label>
+                    <input type="text" pInputText id="name" formControlName="name" placeholder="Name" class="w-9">
+                </div>
+                @if (registerForm.get("name")?.touched && registerForm.get("name")?.errors) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Name is
+                    required!</p-message>
+                }
+            </div>
+            <div class="flex flex-column gap-2">
+                <div class="flex justify-content-center align-items-center">
+                    <label for="email" class="w-3 text-left">Email</label>
+                    <input type="email" pInputText id="email" formControlName="email" placeholder="Email@gmail.com"
+                        class="w-9">
+                </div>
+
+                @if (registerForm.get("email")?.touched && registerForm.get("email")?.errors) {
+                @if (registerForm.get("email")?.getError('required')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Email is
+                    required!</p-message>
+                } @else if (registerForm.get("email")?.getError('pattern')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Invalid email
+                    format!</p-message>
+                }
+                }
+            </div>
+            <div class="flex flex-column gap-2">
+                <div class="flex justify-content-center align-items-center">
+                    <label for="user" class="w-3 text-left">User Name</label>
+                    <input type="text" pInputText id="user" formControlName="userName" placeholder="User Name"
+                        class="w-9">
+                </div>
+                @if (registerForm.get("userName")?.touched && registerForm.get("userName")?.errors) {
+                @if (registerForm.get("userName")?.getError('required')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">User name is
+                    required!</p-message>
+                } @else if (registerForm.get("userName")?.getError('pattern')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">User name mustn't contain
+                    spaces!</p-message>
+                }
+                }
+            </div>
+            <div class="flex flex-column gap-2">
+                <div class="flex justify-content-center align-items-center">
+                    <label for="pass" class="w-3 text-left">Password</label>
+                    <input type="password" pInputText id="pass" formControlName="password" class="w-9"
+                        placeholder="Password">
+                </div>
+                @if (registerForm.get("password")?.touched && registerForm.get("password")?.errors) {
+                @if (registerForm.get("password")?.getError('required')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Password is
+                    required!</p-message>
+                } @else if (registerForm.get("password")?.getError('pattern')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Password must contain at
+                    least 1 lowercase, 1 uppercase,
+                    1 digit,
+                    special
+                    characters & minimum 8 characters!</p-message>
+                }}
+            </div>
+            <div class="flex flex-column gap-2">
+                <div class="flex justify-content-center align-items-center">
+                    <label for="confirmPass" class="w-3 text-left">Confirm Password</label>
+                    <input type="password" pInputText id="confirmPass" formControlName="confirmPassword" class="w-9"
+                        placeholder="Confirm Password">
+                </div>
+                @if (registerForm.get("confirmPassword")?.touched && registerForm.get("confirmPassword")?.errors) {
+                @if (registerForm.get("confirmPassword")?.getError('required')) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Confirm password is
+                    required!</p-message>
+                }
+                } @else if (!registerForm.get("confirmPassword")?.errors &&
+                registerForm.errors?.['passwordMismatch']) {
+                <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Password doesn't
+                    match!</p-message>
+                }
+            </div>
+            <div formArrayName="fullAddress" class="flex flex-column gap-2">
+                <div class="flex justify-content-between align-items-center">
+                    <label class="w-3 text-left">Address</label>
+                    <button pButton type="button" (click)="addAddress()" class="w-6 font-bold">Add new address</button>
+                </div>
+                <div class="flex flex-column gap-2" *ngFor="let address of addresses.controls let i = index">
+                    <div [formGroupName]="i" class="flex gap-2">
+                        <div class="w-10 flex gap-1">
+                            <input class="w-3" type="text" pInputText placeholder="Building" id="address"
+                                formControlName="address">
+                            <input class="w-3" type="text" pInputText placeholder="Street" id="street"
+                                formControlName="street">
+                            <input class="w-3" type="text" pInputText placeholder="Country" id="country"
+                                formControlName="country">
+                            <input class="w-3" type="text" pInputText placeholder="City" id="city"
+                                formControlName="city">
+                        </div>
+                        <button type="button" pButton (click)="deleteAddress(i)"
+                            class="w-2 p-button-danger font-bold my-add-dark:border-0">Delete</button>
+                    </div>
+                    @if (addresses.at(i).get('address')?.getError('required') &&
+                    addresses.at(i).get('address')?.touched) {
+                    <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Address field must be
+                        fill!</p-message>
+                    } @else if (addresses.at(i).get('street')?.getError('required') &&
+                    addresses.at(i).get('street')?.touched) {
+                    <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Street field must be
+                        fill!</p-message>
+                    } @else if (addresses.at(i).get('country')?.getError('required') &&
+                    addresses.at(i).get('country')?.touched) {
+                    <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">Country field must be
+                        fill!</p-message>
+                    } @else if (addresses.at(i).get('city')?.getError('required') &&
+                    addresses.at(i).get('city')?.touched) {
+                    <p-message variant="outlined" severity="error" [styleClass]="' m-auto'">City field must be
+                        fill!</p-message>
+                    }
+                </div>
+            </div>
+            <div class="buttons flex gap-2 w-10 m-auto">
+                <button pButton [disabled]="!registerForm.valid" class="w-6 font-bold">Register</button>
+                <button pButton type='button' (click)="clearForm()" class="w-6 font-bold">Clear</button>
+            </div>
+        </form>
+        <div class="social-logins">
+            <p-divider align="center" type="solid">
+                <b>Or</b>
+            </p-divider>
+            <div class="flex justify-content-center align-items-center w-12 gap-5">
+                <div class="social-icons w-5 flex justify-content-center">
+                    <div #googleBtn></div>
+                </div>
+                <div class="register__divider"></div>
+                <div class=" flex justify-content-center w-5">
+                    <p class="login font-medium">Already have an account! <strong><a routerLink="/login"
+                                class="text-red-500 font-bold underline">Login</a></strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card flex justify-center border-0">
+    <p-toast position="top-center" key="confirm" (onClose)="onClose()" [baseZIndex]="5000">
+        <ng-template let-message #headless let-closeFn="closeFn">
+            <section class="flex flex-column p-4 gap-4 w-full rounded-xl">
+                <div class="mb-3">
+                    You have unsaved changes. Are you sure you want to leave this page?
+                </div>
+                <div class="register__toast-btns w-full flex gap-2 justify-content-center">
+                    <p-button severity="contrast" label="Confirm?" (onClick)="onUserConfirmed()" size="small" />
+                    <p-button severity="danger" label="Cancel" (onClick)="onUserCancelled()" size="small" />
+                </div>
+            </section>
+        </ng-template>
+    </p-toast>
+</div>
+
+<div class="card flex justify-center gap-2">
+    <p-toast />
+</div>
