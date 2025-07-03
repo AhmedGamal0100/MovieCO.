@@ -1,10 +1,19 @@
 <div class="home-card">
-    <div class="home-card__thumbnail">
-        <img [src]="movieCardThumbnailImg()" alt="thumbnail image" class="border-round-xl">
-    </div>
-    <div class="home-card__knob">
-        <p-knob [(ngModel)]="movieCardAveragePopularity" [size]="50" [strokeWidth]="8" textColor='' />
-    </div>
-    <h4>{{movieCardTitle()}}</h4>
-    <h5>{{movieCardDate()}}</h5>
+  <div class="home-card__thumbnail">
+    <img [src]="movieCardThumbnailImg()" alt="thumbnail image">
+  </div>
+
+  <div class="home-card__knob">
+    @if (movieCardAveragePopularity() < 30) { <p-knob [(ngModel)]="movieCardAveragePopularity" [size]="50"
+      [strokeWidth]="5" class="home-card__level-red"></p-knob>
+      } @else if (movieCardAveragePopularity() < 70) { <p-knob [(ngModel)]="movieCardAveragePopularity" [size]="50"
+        [strokeWidth]="5" class="home-card__level-yellow"></p-knob>
+        } @else {
+        <p-knob [(ngModel)]="movieCardAveragePopularity" [size]="50" [strokeWidth]="5"
+          class="home-card__level-emerald"></p-knob>
+        }
+  </div>
+  <div class="home-card__content">
+    <h4>{{ movieCardTitle() }}</h4>
+  </div>
 </div>

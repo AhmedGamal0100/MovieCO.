@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Header } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,14 @@ export class ApiService {
     return this._http.get(
       `https://api.themoviedb.org/3/movie/now_playing?language=${lang}&page=${page}`, this.headers);
   }
-
+  getMoviesPopular(lang: string = 'en-US', page: number = 1) {
+    return this._http.get(
+      `https://api.themoviedb.org/3/movie/popular?language=${lang}&page=${page}`, this.headers);
+  }
+  getMoviesUpComing(lang: string = 'en-US', page: number = 1) {
+    return this._http.get(
+      `https://api.themoviedb.org/3/movie/upcoming?language=${lang}&page=${page}`, this.headers);
+  }
   getDetailedMovie(id: number = 1278950) {
     return this._http.get(
       `https://api.themoviedb.org/3/movie/${id}?language=en-US`, this.headers);

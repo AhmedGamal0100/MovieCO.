@@ -1,0 +1,19 @@
+<section class="cards-slider">
+  <section class="cards-slider__container">
+    <div class="cards-slider__title">
+      <a href="">
+        <h2>Now Playing</h2>
+      </a>
+    </div>
+    <p-carousel [value]="movieCardObjs()" [numVisible]="6" [numScroll]="2" [showIndicators]="false" [circular]="true"
+      [responsiveOptions]="responsiveOptions">
+      <ng-template pTemplate="item" let-movie>
+        <button>
+        <div>
+          <app-home-cards [movieCardObj]="movie"></app-home-cards>
+        </div>
+        </button>
+      </ng-template>
+    </p-carousel>
+  </section>
+</section>

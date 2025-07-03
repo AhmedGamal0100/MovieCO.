@@ -6,46 +6,62 @@ import { IMovie } from '../interfaces/movie';
 import { Subscription } from 'rxjs';
 
 let subscription = new Subscription
+let subscriptionPopular = new Subscription
+let subscriptionUpComing = new Subscription
 
 export const ApiStore = signalStore(
   { providedIn: 'root' },
   withState({
+    nowPlayingMovies: [{}],
     popularMovies: [{}],
+    upComingMovies: [{}],
   }),
 
   withComputed((state) => ({
-    getPopularMovies: state.popularMovies
+    nowPlayingMovies: state.nowPlayingMovies,
+    popularMovies: state.popularMovies,
+    upComingMovies: state.upComingMovies
   })),
 
   withMethods((state) => {
     return {
-      loginMethod: () => {
-
-      },
-
-      logoutMethod: () => {
-
-      },
-
     };
   }),
 
   withHooks({
     onInit(state) {
       const apiService = inject(ApiService);
+
+      // Now Playing Movies
       subscription = apiService.getMovies().subscribe({
+        next: (data: any) => {
+          patchState(state, { nowPlayingMovies: data.results as (IMovie[]) });
+        },
+        error: err => console.error('Failed to load API', err)
+      });
+
+      // Now Popular
+      subscriptionPopular = apiService.getMoviesPopular().subscribe({
         next: (data: any) => {
           patchState(state, { popularMovies: data.results as (IMovie[]) });
         },
         error: err => console.error('Failed to load API', err)
       });
 
-      effect(() => {
-      })
+      // Now Up Coming
+      subscriptionUpComing = apiService.getMoviesUpComing().subscribe({
+        next: (data: any) => {
+          patchState(state, { upComingMovies: data.results as (IMovie[]) });
+        },
+        error: err => console.error('Failed to load API', err)
+      });
+
     },
 
     onDestroy() {
       subscription.unsubscribe()
+      subscriptionPopular.unsubscribe()
+      subscriptionUpComing.unsubscribe()
     }
   })
 );
