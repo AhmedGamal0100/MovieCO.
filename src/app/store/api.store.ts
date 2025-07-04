@@ -17,11 +17,19 @@ export const ApiStore = signalStore(
     popularMovies: [{}],
     upComingMovies: [{}],
     moviesIds: [0],
-    tvShow: [{}]
+    tvShow: [{}],
+    lang: "en-US",
+    page: 1
   }),
 
   withMethods((state) => {
     return {
+      setLanguage(lang: string) {
+        patchState(state, { lang });
+      },
+      setPage(page: number) {
+        patchState(state, { page });
+      }
     };
   }),
 
@@ -30,42 +38,43 @@ export const ApiStore = signalStore(
       const apiService = inject(ApiService);
 
       // Now Playing Movies
-      subscription = apiService.getMovies().subscribe({
-        next: (data: any) => {
-          patchState(state, { nowPlayingMovies: data.results as (IMovie[]) });
-        },
-        error: err => console.error('Failed to load API', err)
-      });
+      effect(() => {
+        subscription = apiService.getMovies(state.lang(), state.page()).subscribe({
+          next: (data: any) => {
+            patchState(state, { nowPlayingMovies: data.results as (IMovie[]) });
+          },
+          error: err => console.error('Failed to load API', err)
+        });
 
-      // Now Popular
-      subscriptionPopular = apiService.getMoviesPopular().subscribe({
-        next: (data: any) => {
-          patchState(state, { popularMovies: data.results as (IMovie[]) });
-          patchState(state, {
-            moviesIds: [
-              ...data.results.map((movie: IMovie) => movie.id)
-            ]
-          });
-        },
-        error: err => console.error('Failed to load API', err)
-      });
+        // Now Popular
+        subscriptionPopular = apiService.getMoviesPopular(state.lang(), state.page()).subscribe({
+          next: (data: any) => {
+            patchState(state, { popularMovies: data.results as (IMovie[]) });
+            patchState(state, {
+              moviesIds: [
+                ...data.results.map((movie: IMovie) => movie.id)
+              ]
+            });
+          },
+          error: err => console.error('Failed to load API', err)
+        });
 
-      // Now Up Coming
-      subscriptionUpComing = apiService.getMoviesUpComing().subscribe({
-        next: (data: any) => {
-          patchState(state, { upComingMovies: data.results as (IMovie[]) });
-        },
-        error: err => console.error('Failed to load API', err)
-      });
+        // Now Up Coming
+        subscriptionUpComing = apiService.getMoviesUpComing(state.lang(), state.page()).subscribe({
+          next: (data: any) => {
+            patchState(state, { upComingMovies: data.results as (IMovie[]) });
+          },
+          error: err => console.error('Failed to load API', err)
+        });
 
-      // Now Tv Show
-      subscriptionUpComing = apiService.getTvShows().subscribe({
-        next: (data: any) => {
-          patchState(state, { tvShow: data.results as (IMovie[]) });
-        },
-        error: err => console.error('Failed to load API', err)
+        // Now Tv Show
+        subscriptionUpComing = apiService.getTvShows(state.lang(), state.page()).subscribe({
+          next: (data: any) => {
+            patchState(state, { tvShow: data.results as (IMovie[]) });
+          },
+          error: err => console.error('Failed to load API', err)
+        });
       });
-
     },
 
     onDestroy() {

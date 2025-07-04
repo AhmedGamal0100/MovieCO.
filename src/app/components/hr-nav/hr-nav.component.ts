@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { NavToggleService } from '../../services/nav-toggle.service';
 import { NotificationStore } from '../../store/notification.store';
 import { BadgeModule } from 'primeng/badge';
+import { ApiStore } from '../../store/api.store';
 
 @Component({
   selector: 'app-hr-nav',
@@ -22,13 +23,27 @@ import { BadgeModule } from 'primeng/badge';
 })
 export class HrNavComponent {
   private _notificationStore = inject(NotificationStore);
+  private _apiStore = inject(ApiStore);
   notificationsList = signal<string[]>([]);
   notificationLength = signal<number>(0);
   navToggle = inject(NavToggleService);
   searchValue = signal<string | undefined>(undefined);
   mode = <boolean>(false);
   isRtl = <boolean>(false);
-  
+  selectedLang = signal<{ lang: string } | null>(null);
+  @ViewChild('op') op!: Popover;
+  @ViewChild('opCombo') opCombo!: Popover;
+  Languages = [{
+    lang: 'en',
+  }, {
+    lang: 'ar',
+  }, {
+    lang: 'fr',
+  }, {
+    lang: 'zh'
+  }
+  ];
+
   constructor() {
     effect(() => {
       this.notificationsList.set(
@@ -36,14 +51,24 @@ export class HrNavComponent {
       );
       this.notificationLength.set(
         this._notificationStore.notificationState().length
-      )
+      );
+      this._apiStore.setLanguage(this.selectedLang()?.lang || 'en-US');
     })
   }
 
-  @ViewChild('op') op!: Popover;
   toggle(event: any) {
     this.op.toggle(event);
   }
+  toggleCombo(event: any) {
+    this.opCombo.toggle(event);
+  }
+
+  selectMember(language: { lang: string }) {
+    this.selectedLang.set(language);
+    this.opCombo.hide();
+  }
+
+
 
   toggleDarkMode() {
     const element = document.querySelector('html');
@@ -56,9 +81,18 @@ export class HrNavComponent {
     }
   }
 
-  // push() {
-  //   this._notificationStore.pushNotification("New notification");
-  // }
+  changeVerticalBarDirection() {
+    this.navToggle.setPosition();
+    const element = document.querySelector('html');
+    if (element) {
+      if (this.isRtl) {
+        element.setAttribute('dir', 'rtl');
+      } else {
+        element.setAttribute('dir', 'ltr');
+      }
+    }
+  }
+
   onDestroy() {
     this.mode = false;
     this.isRtl = false;

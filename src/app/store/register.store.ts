@@ -76,7 +76,41 @@ export const registerStore = signalStore(
                 patchState(state, {
                     accountsList: [...state.accountsList(), acc]
                 });
+            },
+            toggleMovieWishlist: (movieId: number) => {
+                // Toggle movie wishlist for the logged-in user
+                const loggedAccountJSON = sessionStorage.getItem("user_id");
+                if (!loggedAccountJSON) return;
+
+
+                const loggedAccount = JSON.parse(loggedAccountJSON) as IAccount;
+                const movieIds = loggedAccount.wishList?.moviesIds ?? [];
+
+                // Check if the movieId is already in the wishlist
+                const updatedMovieIds = movieIds.includes(movieId)
+                    ? movieIds.filter(id => id !== movieId)
+                    : [...movieIds, movieId];
+
+                // Update the logged account's wishlist
+                const updatedAccount: IAccount = {
+                    ...loggedAccount,
+                    wishList: {
+                        moviesIds: updatedMovieIds,
+                        tvShowsIds: loggedAccount.wishList?.tvShowsIds ?? []
+                    }
+                };
+
+                sessionStorage.setItem("user_id", JSON.stringify(updatedAccount));
+
+                patchState(state, {
+                    accountsList: state.accountsList().map(acc =>
+                        acc.sub === loggedAccount.sub ? updatedAccount : acc
+                    )
+                });
             }
+
+
+
             // const pass = generateSecurePassword();
             // patchState(state, {
             //     accountsList: state.accountsList().map(acc =>

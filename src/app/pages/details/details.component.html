@@ -1,0 +1,85 @@
+<div class="movie-details">
+    <div class="movie-details__container w-12 flex">
+        <div class="movie-details__bg"></div>
+        <div class="movie-details__banner">
+            <div class="">
+                <img class="backdrop" [src]="getBackdropUrl" alt="Backdrop" />
+            </div>
+        </div>
+        <div class="movie-details__action-buttons">
+            <button class="movie-details__back-btn" (click)="goBack()">
+                <i class="pi pi-arrow-left"></i>
+            </button>
+            <!-- @if (!isWishlisted) {
+            <button (click)="pushToNotification()"><i class="pi pi-heart"></i></button>
+            } @else {
+            <button (click)="pushToNotification()"><i class="pi pi-heart-fill"></i></button>
+            } -->
+            <button (click)="toggleWishlist()">
+                @if (!isWishlisted()) {
+                <i class="pi pi-heart"></i>
+                } @else {
+                <i class="pi pi-heart-fill"></i>
+                }
+            </button>
+        </div>
+
+        <div class="movie-details__poster w-4">
+            <div class="movie-details__poster-img">
+                <img [src]="getPosterUrl" alt="{{ movieDetails.title }}" />
+            </div>
+        </div>
+
+        <div class="movie-details__tab-content w-4 flex flex-column gap-2">
+            <h1 class="movie-details__title">{{ movieDetails.title }}</h1>
+            <div class="flex align-items-center mb-3 gap-2">
+                @if (movieDetails.adult) {
+                <h4 class="movie-details__adult">R</h4>
+                }
+                <h4 class="movie-details__date">{{ movieDetails.release_date }}</h4>
+                <div class="flex gap-2 align-items-center border-1 px-2 py-1 border-round-lg bg-white">
+                    <h4 class="movie-details__rate text-gray-900"> {{movieDetails.vote_average.toFixed(2)}}/10</h4>
+                    <i class="pi pi-star-fill text-gray-900"></i>
+                </div>
+            </div>
+            <div class="movie-details__genres">
+                @for (genre of movieDetails.genres; track genre.id) {
+                <div>{{genre.name}}</div>
+                }
+            </div>
+            <p>{{movieDetails.tagline}}</p>
+            <p>{{movieDetails.overview}}</p>
+            <div>
+                <h4 class="text-2xl mb-2">Production Companies</h4>
+                <ul class="movie-details__production">
+                    @for (company of movieDetails.production_companies; track company.id) {
+                    <li>{{company.name}}</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="movie-details__reviews w-4 p-5 flex flex-column jutify-content-center align-items-center">
+            @if (movieReviews.length > 0) {
+            <p-accordion [value]="0">
+                @for (rev of movieReviews; track rev.id; let i = $index) {
+                <p-accordion-panel [value]="rev.id">
+                    <p-accordion-header>- Review {{i}}: {{ rev.author }}</p-accordion-header>
+                    <p-accordion-content>
+                        <p class="m-0">{{ rev.content}}</p>
+                    </p-accordion-content>
+                </p-accordion-panel>
+                }
+            </p-accordion>
+            } @else {
+            <h3 class="movie-details__reviews-no w-full">No Available Reviews</h3>
+            }
+        </div>
+    </div>
+    @if (movieRecommendations > 0) {
+    <app-detail-similar-slider></app-detail-similar-slider>
+    }
+    <div class="card flex justify-center gap-2 text-2xl toast">
+        <p-toast />
+    </div>
+</div>

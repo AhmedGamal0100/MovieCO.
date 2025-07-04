@@ -1,3 +1,6 @@
+import { IMovie } from "./movie"
+import { ITv } from "./tv"
+
 export interface IAccount {
     sub: string,
     email: string,
@@ -14,5 +17,9 @@ export interface IAccount {
         street: string,
         country: string,
         city: string
+    },
+    wishList?: {
+        moviesIds: number[],
+        tvShowsIds: number[]
     }
 }

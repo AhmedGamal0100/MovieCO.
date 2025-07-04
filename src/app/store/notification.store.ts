@@ -21,7 +21,7 @@ export const NotificationStore = signalStore(
                 patchState(state, {
                     notificationState: state.notificationState().filter(n => n.id !== newId)
                 });
-            }, 100000);
+            }, 15000);
         },
     }))
 )

@@ -8,10 +8,10 @@
     <p-carousel [value]="movieCardObjs()" [numVisible]="6" [numScroll]="2" [showIndicators]="false" [circular]="true"
       [responsiveOptions]="responsiveOptions">
       <ng-template pTemplate="item" let-movie>
-        <button>
-        <div>
-          <app-home-cards [movieCardObj]="movie"></app-home-cards>
-        </div>
+        <button (click)="routeToDetails(movie)">
+          <div>
+            <app-home-cards [movieCardObj]="movie"></app-home-cards>
+          </div>
         </button>
       </ng-template>
     </p-carousel>

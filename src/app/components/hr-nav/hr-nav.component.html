@@ -1,10 +1,15 @@
 <nav class="horizontal-nav border-300 border-bottom-1">
     <div class="horizontal-nav__container">
-        <p-button (click)="navToggle.setVisibility()" icon="pi pi-bars" [size]="'large'" />
+        <div class="flex align-items-center gap-3">
+            <p-button (click)="navToggle.setVisibility()" icon="pi pi-bars" [size]="'large'" />
+            <p-button type="button" [label]="selectedLang() ? selectedLang()?.lang : 'en'"
+                (onClick)="toggleCombo($event)" styleClass="min-w-48" />
+        </div>
         <p-floatlabel variant="on" class="horizontal-nav__search w-6">
             <p-iconfield>
                 <p-inputicon class="pi pi-search" />
-                <input pInputText id="on_label" [(ngModel)]="searchValue" autocomplete="off" class="w-full" [pSize]="'large'"   />
+                <input pInputText id="on_label" [(ngModel)]="searchValue" autocomplete="off" class="w-full"
+                    [pSize]="'large'" />
             </p-iconfield>
             <label for="on_label">Search movie.</label>
         </p-floatlabel>
@@ -12,7 +17,8 @@
             <!-- <button (click)="push()">X</button> -->
             <p-toggleButton [(ngModel)]="mode" onIcon="pi pi-sun" offIcon="pi pi-moon" onLabel="Light" offLabel="Dark"
                 (onChange)="toggleDarkMode()" [size]="'large'"></p-toggleButton>
-            <p-toggleButton [(ngModel)]="isRtl" onLabel="RTL" offLabel="LTR" [size]="'large'"></p-toggleButton>
+            <p-toggleButton [(ngModel)]="isRtl" onLabel="RTL" offLabel="LTR" [size]="'large'"
+                (onChange)="changeVerticalBarDirection()"></p-toggleButton>
 
             <div class="horizontal-nav__notification">
                 @if (notificationLength()> 0) {
@@ -39,6 +45,16 @@
                             }
                         </ul>
                     </div>
+                </p-popover>
+                <p-popover #opCombo>
+                    <ul class="list-none p-0 m-0 flex flex-column">
+                        <li *ngFor="let language of Languages"
+                            class="flex align-items-center gap-2 px-2 py-2 cursor-pointer horizontal-nav__lang"
+                            (click)="selectMember(language)">
+                            <div>{{ language.lang }}
+                            </div>
+                        </li>
+                    </ul>
                 </p-popover>
             </div>
         </div>

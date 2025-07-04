@@ -1,0 +1,217 @@
+:host {
+    .movie-details {
+        position: relative;
+        background-color: #121212;
+        color: #fff;
+    }
+
+    .movie-details__container {
+        position: relative;
+        color: white;
+        z-index: 2;
+        min-height: 90vh;
+    }
+
+    .movie-details__bg {
+        z-index: 1;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .movie-details__banner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            filter: brightness(0.5);
+        }
+    }
+
+    .movie-details__action-buttons {
+        position: absolute;
+        top: 0;
+        right: 0.5rem;
+        padding: 1rem;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            height: 3rem;
+            width: 3rem;
+            background-color: var(--p-red-500);
+            color: #fff;
+            border-radius: 50%;
+            padding: 0.5rem 1rem;
+            border: none;
+            cursor: pointer;
+
+            i {
+                font-size: 1.1rem;
+            }
+
+            &:hover {
+                background-color: var(--p-red-600);
+            }
+        }
+    }
+
+    .movie-details__poster {
+        position: relative;
+        border-radius: 10px;
+        z-index: 3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .movie-details__poster-img {
+            width: 80%;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+
+    .movie-details__tab-content {
+        position: relative;
+        z-index: 3;
+        padding: 1rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding-block: 2rem;
+
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+    }
+
+    .movie-details__tab-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 3rem;
+
+        .movie-details__date {
+            color: #ccc;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-decoration: underline;
+        }
+
+        .movie-details__overview {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            
+        }
+
+        .movie-details__genres {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            div {
+                width: fit-content;
+                font-size: 1rem;
+                color: #fff;
+                margin-bottom: 0.5rem;
+                background-color: rgba(255, 255, 255, 0.5);
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+            }
+        }
+
+        .movie-details__production {
+            list-style-type: circle;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            li {
+                text-align: left;
+                font-size: 1.2rem;
+                color: #ccc;
+            }
+        }
+
+    }
+
+    .movie-details__reviews {
+        position: relative;
+        z-index: 3;
+        max-height: 100%;
+        justify-content: center;
+    }
+
+    .movie-details__reviews-no {
+        text-align: center;
+        width: fit-content;
+        color: #ccc;
+        font-size: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding-block: 1rem;
+        border-radius: 10px;
+    }
+
+    ::ng-deep p-accordion-panel {
+        // padding: 0.5rem;
+
+        .p-accordion-panel {
+            max-height: 500px;
+
+        }
+
+        p {
+            max-height: 300px;
+            overflow-y: scroll;
+            padding-block: 1rem;
+        }
+    }
+
+}
+
+.toast{
+    position: relative;
+    z-index: 10;
+
+    background-color: rgba(0, 0, 0, 0.7);
+}

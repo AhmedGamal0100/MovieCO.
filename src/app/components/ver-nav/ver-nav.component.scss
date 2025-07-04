@@ -18,3 +18,12 @@
     transform: translateY(42%);
     left: -1rem;
 }
+
+li {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+li:hover {
+    background-color: var(--p-slate-200);
+}

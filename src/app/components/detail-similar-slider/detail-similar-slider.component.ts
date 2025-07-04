@@ -1,23 +1,19 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { HomeCardsComponent } from "../home-cards/home-cards.component";
-import { ApiStore } from '../../store/api.store';
 import { IMovie } from '../../interfaces/movie';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-
+import { ApiDetailsStore } from '../../store/api-details.store';
 
 @Component({
-  standalone: true,
-  selector: 'app-home-cards-slider',
+  selector: 'app-detail-similar-slider',
   imports: [HomeCardsComponent, Carousel, ButtonModule],
-  templateUrl: './home-cards-slider.component.html',
-  styleUrl: './home-cards-slider.component.scss',
-  providers: []
-
+  templateUrl: './detail-similar-slider.component.html',
+  styleUrl: './detail-similar-slider.component.scss'
 })
-export class HomeCardsSliderComponent {
-  private _apiStore = inject(ApiStore);
+export class DetailSimilarSliderComponent {
+  private _apiDetailsStore = inject(ApiDetailsStore);
   private _router = inject(Router);
   movieCardObjs = signal<IMovie[]>([{
     adult: false,
@@ -65,10 +61,10 @@ export class HomeCardsSliderComponent {
   routeToDetails(movie: IMovie) {
     this._router.navigateByUrl('/home/details/' + movie.id);
   }
-  
+
   constructor() {
     effect(() => {
-      this.movieCardObjs.set((this._apiStore.nowPlayingMovies()) as (IMovie[]));
+      this.movieCardObjs.set((this._apiDetailsStore.detailedRecommendations()) as (IMovie[]));
     })
   }
 }

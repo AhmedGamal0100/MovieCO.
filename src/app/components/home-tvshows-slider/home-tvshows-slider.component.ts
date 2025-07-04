@@ -55,6 +55,11 @@ export class HomeTvshowsSliderComponent {
       }
     ]
   }
+
+  // routeToDetails(movie: IMovie) {
+  //   this._router.navigateByUrl('/home/details/' + movie.id);
+  // }
+
   constructor() {
     effect(() => {
       this.showCardObjs.set((this._apiStore.tvShow()) as (ITv[]));

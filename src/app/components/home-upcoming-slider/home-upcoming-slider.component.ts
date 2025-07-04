@@ -4,6 +4,7 @@ import { ApiStore } from '../../store/api.store';
 import { IMovie } from '../../interfaces/movie';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-upcoming-slider',
@@ -13,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class HomeUpcomingSliderComponent {
   private _apiStore = inject(ApiStore);
+  private _router = inject(Router);
   movieCardObjs = signal<IMovie[]>([{
     adult: false,
     backdrop_path: '',
@@ -55,6 +57,11 @@ export class HomeUpcomingSliderComponent {
       }
     ]
   }
+
+  routeToDetails(movie: IMovie) {
+    this._router.navigateByUrl('/home/details/' + movie.id);
+  }
+
   constructor() {
     effect(() => {
       this.movieCardObjs.set((this._apiStore.upComingMovies()) as (IMovie[]));

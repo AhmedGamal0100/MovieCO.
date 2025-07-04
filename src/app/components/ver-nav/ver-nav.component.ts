@@ -8,6 +8,7 @@ import { NavToggleService } from '../../services/nav-toggle.service';
 import { LoginStore } from '../../store/login.store';
 import { Router } from '@angular/router';
 import { GoogleAuthService } from '../../services/google-auth.service';
+import { IAccount } from '../../interfaces/account';
 
 @Component({
   selector: 'app-ver-nav',
@@ -22,6 +23,8 @@ export class VerNavComponent {
   private _googleAuthService = inject(GoogleAuthService);
   visible = signal(false);
   isLogged = signal(false);
+  loggedAccount = signal<IAccount | null>(null);
+  loggedAccountName = signal<string | null>(null);
 
   @ViewChild('drawerRef') drawerRef!: Drawer;
 
@@ -39,26 +42,48 @@ export class VerNavComponent {
         this.loginStore.logoutMethod();
         this.isLogged.set(false);
       }
+
+      this.getLoggedAccount();
+
+      const parts = this.loggedAccount()?.name?.split(' ') || [];
+      let displayName = "";
+
+      if (parts.length > 1) {
+        displayName = parts[0] + parts[1][0].toUpperCase() + parts[1].slice(1).toLowerCase();
+      } else if (parts.length === 1) {
+        displayName = parts[0];
+      }
+
+      this.loggedAccountName.set(displayName);
     });
   }
 
 
-  closeCallback(e: any): void {
-    this.drawerRef.close(e);
-  }
+closeCallback(e: any): void {
+  this.drawerRef.close(e);
+}
 
-  login() {
-    this._router.navigateByUrl('/login');
-  }
+login() {
+  this._router.navigateByUrl('/login');
+}
 
-  register() {
-    this._router.navigateByUrl('/register');
+register() {
+  this._router.navigateByUrl('/register');
+}
+
+getLoggedAccount() {
+  const account = JSON.parse(sessionStorage.getItem("user_id") ?? "null");
+  if (account) {
+    this.loggedAccount.set(account);
+  } else {
+    this.loggedAccount.set(null);
   }
+}
 
   async logOut() {
-    await this._googleAuthService.GoogleSignOut();
-    this.loginStore.logoutMethod();
-    this.isLogged.set(false);
-    location.reload();
-  }
+  await this._googleAuthService.GoogleSignOut();
+  this.loginStore.logoutMethod();
+  this.isLogged.set(false);
+  location.reload();
+}
 }
