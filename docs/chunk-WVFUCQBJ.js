@@ -1,0 +1,1 @@
+import{Nb as o,Za as s,tb as i,ub as n}from"./chunk-UGKDFCWG.js";var p=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=s({type:t,selectors:[["app-wish-list"]],decls:2,vars:0,template:function(e,m){e&1&&(i(0,"p"),o(1,"wish-list works!"),n())},encapsulation:2})};export{p as WishListComponent};
