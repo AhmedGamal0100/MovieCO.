@@ -140,7 +140,7 @@
         .movie-details__overview {
             font-size: 2rem;
             margin-bottom: 1rem;
-            
+
         }
 
         .movie-details__genres {
@@ -209,9 +209,16 @@
 
 }
 
-.toast{
+.toast {
     position: relative;
     z-index: 10;
 
     background-color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 576px) {
+    .movie-details__container{
+        display: flex;
+        flex-direction: column;
+    }
 }

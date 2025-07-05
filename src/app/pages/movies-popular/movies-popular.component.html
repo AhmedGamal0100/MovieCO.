@@ -1,0 +1,16 @@
+<div class="flex w-full flex-wrap justify-content-center popular__container">
+    @for (movie of movieCardObjs(); track movie.id) {
+    @if (!movie.adult || undefined || null) {
+    <div class="popular__card">
+        <app-filter-card [movieCardObj]='movie'></app-filter-card>
+    </div>
+    }
+    }
+</div>
+
+<div class="flex items-center justify-content-center  my-2">
+    <p-paginator (onPageChange)="onPageChange3($event)" [first]="first3" [rows]="rows3" [totalRecords]="totalRecords()"
+        [showFirstLastIcon]="true" [showCurrentPageReport]="true"
+        currentPageReportTemplate="{first} - {last} of {totalRecords}">
+    </p-paginator>
+</div>

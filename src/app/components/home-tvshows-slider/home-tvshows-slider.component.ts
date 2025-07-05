@@ -1,34 +1,21 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, Inject, inject, signal } from '@angular/core';
 import { ApiStore } from '../../store/api.store';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { HomeTvCardComponent } from "../home-tv-card/home-tv-card.component";
 import { ITv } from '../../interfaces/tv';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home-tvshows-slider',
-  imports: [Carousel, ButtonModule, HomeTvCardComponent],
+  imports: [Carousel, ButtonModule, HomeTvCardComponent, RouterModule],
   templateUrl: './home-tvshows-slider.component.html',
   styleUrl: './home-tvshows-slider.component.scss'
 })
 export class HomeTvshowsSliderComponent {
   private _apiStore = inject(ApiStore);
-  showCardObjs = signal<ITv[]>([{
-    adult: false,
-    backdrop_path: '',
-    genre_ids: [],
-    id: 0,
-    genre_country: [],
-    original_language: '',
-    original_name: '',
-    overview: '',
-    popularity: 0,
-    poster_path: '',
-    first_air_date: '',
-    name: '',
-    vote_average: 0,
-    vote_count: 0
-  }]);
+  private _router = inject(Router);
+  showCardObjs = signal<ITv[]>([]);
   responsiveOptions: any[] | undefined;
 
   ngOnInit() {
@@ -56,9 +43,9 @@ export class HomeTvshowsSliderComponent {
     ]
   }
 
-  // routeToDetails(movie: IMovie) {
-  //   this._router.navigateByUrl('/home/details/' + movie.id);
-  // }
+  routeToDetails(tvShow: ITv) {    
+    this._router.navigateByUrl('/home/details-tv/' + tvShow.id);
+  }
 
   constructor() {
     effect(() => {

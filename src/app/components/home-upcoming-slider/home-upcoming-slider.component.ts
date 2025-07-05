@@ -4,11 +4,11 @@ import { ApiStore } from '../../store/api.store';
 import { IMovie } from '../../interfaces/movie';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home-upcoming-slider',
-  imports: [HomeCardsComponent, Carousel, ButtonModule],
+  imports: [HomeCardsComponent, Carousel, ButtonModule, RouterModule],
   templateUrl: './home-upcoming-slider.component.html',
   styleUrl: './home-upcoming-slider.component.scss'
 })

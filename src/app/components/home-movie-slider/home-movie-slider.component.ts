@@ -3,9 +3,10 @@ import { HomeMovieCardComponent } from "../home-movie-card/home-movie-card.compo
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { ApiStore } from '../../store/api.store';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-home-movie-slider',
-  imports: [HomeMovieCardComponent, Carousel, ButtonModule],
+  imports: [HomeMovieCardComponent, Carousel, ButtonModule, RouterModule],
   templateUrl: './home-movie-slider.component.html',
   styleUrl: './home-movie-slider.component.scss'
 })

@@ -1,18 +1,17 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
-import { ApiDetailsService } from '../../services/api-details.service';
-import { IMovieDetails } from '../../interfaces/movie-details';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Toast } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
-import { ApiDetailsStore } from '../../store/api-details.store';
-import { ApiStore } from '../../store/api.store';
-import { IMovieDetailsReview } from '../../interfaces/movie-details-review';
 import { AccordionModule } from 'primeng/accordion';
-import { DetailSimilarSliderComponent } from "../../components/detail-similar-slider/detail-similar-slider.component";
-import { registerStore } from '../../store/register.store';
-import { IAccount } from '../../interfaces/account';
+import { MessageService } from 'primeng/api';
+import { ApiStore } from '../../store/api.store';
 import { NotificationStore } from '../../store/notification.store';
+import { registerStore } from '../../store/register.store';
+import { IMovieDetails } from '../../interfaces/movie-details';
+import { IMovieDetailsReview } from '../../interfaces/movie-details-review';
+import { IAccount } from '../../interfaces/account';
+import { DetailSimilarSliderComponent } from "../../components/detail-similar-slider/detail-similar-slider.component";
+import { ApiDetailsStore } from '../../store/api-details.store';
 
 @Component({
   selector: 'app-details',
@@ -28,76 +27,82 @@ export class detailsComponent {
   private _apiStore = inject(ApiStore);
   private _registerStore = inject(registerStore);
   private _messageService = inject(MessageService);
-  private router = inject(Router);
   private _notificationStore = inject(NotificationStore);
-  readonly id = input<string>();
+  private router = inject(Router);
+  readonly id = input<number>();
 
-  movieDetails!: IMovieDetails;
-  sampleReview!: string;
-  getBackdropUrl!: string;
-  getPosterUrl!: string;
-  movieReviews: IMovieDetailsReview[] = [];
-  movieRecommendations!: number;
-
+  movieDetails = signal<IMovieDetails | null>(null);
+  movieReviews = signal<IMovieDetailsReview[]>([]);
+  movieRecommendations = signal<number>(0);
   isWishlisted = signal(false);
-  isLoggedIn = signal(false); // track login state
+  isLoggedIn = signal(false);
+
+  getBackdropUrl = signal('');
+  getPosterUrl = signal('');
+  sampleReview = signal('');
 
   constructor() {
     effect(() => {
-      let language = this._apiStore.lang();
-      this._apiDetailsStore.setId(this.id() ? Number(this.id()) : 0);
-      this._apiDetailsStore.setLanguage(language ? language : 'en-US');
+      const details = this._apiDetailsStore.detailedMovie();
+      // const movieId = Number(this.route.snapshot.paramMap.get('id'));
+      if (!this.id()) {
+        this.router.navigate(['/home']);
+        return;
+      }
+
+      this._apiDetailsStore.setId(this.id()!);
+      this._apiDetailsStore.setLanguage(this._apiStore.lang() || 'en-US');
       this._apiDetailsStore.setPage(1);
 
-      // Fetching detailed movie information
-      this.movieDetails = this._apiDetailsStore.detailedMovie() as IMovieDetails;
-      this.sampleReview = this.movieDetails.overview;
-      this.getBackdropUrl = this.constURL + this.movieDetails.backdrop_path;
-      this.getPosterUrl = this.constURL + this.movieDetails.poster_path;
+      if (!details) return;
 
-      // Fetching detailed reviews
-      this.movieReviews = [...this._apiDetailsStore.detailedReview()];
+      this.movieDetails.set(details);
+      this.sampleReview.set(details.overview);
+      this.getBackdropUrl.set(this.constURL + details.backdrop_path);
+      this.getPosterUrl.set(this.constURL + details.poster_path);
+      this.movieReviews.set(this._apiDetailsStore.detailedReview());
+      this.movieRecommendations.set(this._apiDetailsStore.detailedRecommendations().length);
 
-      // Fetching number of recommendations
-      this.movieRecommendations = this._apiDetailsStore.detailedRecommendations().length;
-
-      // Check if user is logged in
       const loggedAccountJSON = sessionStorage.getItem("user_id");
       if (loggedAccountJSON) {
         this.isLoggedIn.set(true);
-
         const loggedAccount = JSON.parse(loggedAccountJSON) as IAccount;
         this.isWishlisted.set(
-          loggedAccount.wishList?.moviesIds.includes(this.movieDetails.id) ?? false
-        );
-      } else {
-        this.isLoggedIn.set(false);
-        this.isWishlisted.set(false);
-      }
+            loggedAccount.wishList?.movies?.some(movie => movie.id == details.id) ?? false
+          );       
+  } else {
+  this.isLoggedIn.set(false);
+  this.isWishlisted.set(false);
+}
     });
   }
 
-  goBack() {
-    this.router.navigate(['/home']);
+goBack() {
+  this.router.navigate(['/home']);
+}
+
+formattedVoteAverage(): string {
+  const vote = this.movieDetails()?.vote_average ?? 0;
+  return vote.toFixed(1) + "/10";
+}
+
+toggleWishlist() {
+  if (!this.isLoggedIn()) {
+    this.showNotify('Login Required', 'Please login first to use the wishlist feature');
+    return;
   }
 
-  toggleWishlist() {
-    if (!this.isLoggedIn()) {
-      this.showNotify('Login Required', 'Please login first to use the wishlist feature');
-      return;
-    }
+  this.isWishlisted.set(!this.isWishlisted());
+  this._registerStore.toggleMovieWishlist(this.movieDetails()!);
 
-    this.isWishlisted.set(!this.isWishlisted());
-    this._registerStore.toggleMovieWishlist(this.movieDetails.id);
+  const actionText = this.isWishlisted() ? "added to" : "removed from";
+  this.showNotify('Watch List Updated', `${this.movieDetails()?.title} was ${actionText} your watch list`);
+  this._notificationStore.pushNotification(
+    `Watch List Updated: ${this.movieDetails()?.title} was ${actionText} your watch list`
+  );
+}
 
-    const actionText = this.isWishlisted() ? "added to" : "removed from";
-    this.showNotify('Watch List Updated', `${this.movieDetails.title} was ${actionText} your watch list`);
-    this._notificationStore.pushNotification(
-      `Watch List Updated: ${this.movieDetails.title} was ${actionText} your watch list`
-    );
-  }
-
-  showNotify(summaryPar: string, detailPar: string) {
-    this._messageService.add({ severity: 'secondary', summary: summaryPar, detail: detailPar });
-  }
+showNotify(summaryPar: string, detailPar: string) {
+  this._messageService.add({ severity: 'secondary', summary: summaryPar, detail: detailPar });
+}
 }

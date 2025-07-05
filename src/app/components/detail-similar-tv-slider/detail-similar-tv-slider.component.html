@@ -1,0 +1,22 @@
+<section class="cards-slider">
+  <section class="cards-slider__container">
+    <div class="cards-slider__title">
+      <h2>Recommended for you</h2>
+    </div>
+    <p-carousel
+      [value]="tvCardObjs()"
+      [numVisible]="6"
+      [numScroll]="2"
+      [showIndicators]="false"
+      [circular]="true"
+      [responsiveOptions]="responsiveOptions">
+      <ng-template pTemplate="item" let-tv>
+        <button (click)="routeToDetails(tv)">
+          <div>
+            <app-home-cards [movieCardObj]="tv"></app-home-cards>
+          </div>
+        </button>
+      </ng-template>
+    </p-carousel>
+  </section>
+</section>

@@ -1,35 +1,75 @@
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { IAccount } from '../interfaces/account';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { effect, inject } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { IMovie } from '../interfaces/movie';
 import { Subscription } from 'rxjs';
+import { ITv } from '../interfaces/tv';
 
-let subscription = new Subscription
-let subscriptionPopular = new Subscription
-let subscriptionUpComing = new Subscription
-let subscriptionTvShow = new Subscription
+let subscriptionNowPlaying = new Subscription();
+let subscriptionPopular = new Subscription();
+let subscriptionUpComing = new Subscription();
+let subscriptionTvShow = new Subscription();
 
 export const ApiStore = signalStore(
   { providedIn: 'root' },
   withState({
-    nowPlayingMovies: [{}],
-    popularMovies: [{}],
-    upComingMovies: [{}],
-    moviesIds: [0],
-    tvShow: [{}],
+    nowPlayingMovies: [] as IMovie[],
+    popularMovies: [] as IMovie[],
+    upComingMovies: [] as IMovie[],
+    tvShow: [] as ITv[],
+    moviesIds: [] as number[],
     lang: "en-US",
-    page: 1
+    popularMoviesTotal: 0,
+    comingMoviesTotal: 0,
+    playingMoviesTotal: 0,
+    page: 1,
   }),
 
   withMethods((state) => {
+    const apiService = inject(ApiService);
     return {
       setLanguage(lang: string) {
         patchState(state, { lang });
       },
-      setPage(page: number) {
+      setPagePopular(page: number) {
         patchState(state, { page });
-      }
+        subscriptionPopular.unsubscribe();
+        subscriptionPopular = apiService.getMoviesPopular(state.lang(), page).subscribe({
+          next: (data: any) => {
+            patchState(state, {
+              popularMovies: data.results as IMovie[],
+              popularMoviesTotal: data.total_results
+            });
+          },
+          error: (err) => console.error('Failed to fetch popular movies', err)
+        });
+      },
+      setPagePlaying(page: number) {
+        patchState(state, { page });
+        subscriptionPopular.unsubscribe();
+        subscriptionPopular = apiService.getMovies(state.lang(), page).subscribe({
+          next: (data: any) => {
+            patchState(state, {
+              nowPlayingMovies: data.results as IMovie[],
+              playingMoviesTotal: data.total_results
+            });
+          },
+          error: (err) => console.error('Failed to fetch popular movies', err)
+        });
+      },
+      setPageComing(page: number) {
+        patchState(state, { page });
+        subscriptionPopular.unsubscribe();
+        subscriptionPopular = apiService.getMoviesUpComing(state.lang(), page).subscribe({
+          next: (data: any) => {
+            patchState(state, {
+              upComingMovies: data.results as IMovie[],
+              comingMoviesTotal: data.total_results
+            });
+          },
+          error: (err) => console.error('Failed to fetch popular movies', err)
+        });
+      },
     };
   }),
 
@@ -37,51 +77,56 @@ export const ApiStore = signalStore(
     onInit(state) {
       const apiService = inject(ApiService);
 
-      // Now Playing Movies
       effect(() => {
-        subscription = apiService.getMovies(state.lang(), state.page()).subscribe({
+        const lang = state.lang();
+        const page = state.page();
+
+        // Now Playing Movies
+        subscriptionNowPlaying.unsubscribe();
+        subscriptionNowPlaying = apiService.getMovies(lang, page).subscribe({
           next: (data: any) => {
-            patchState(state, { nowPlayingMovies: data.results as (IMovie[]) });
+            patchState(state, { nowPlayingMovies: data.results as IMovie[] });
           },
-          error: err => console.error('Failed to load API', err)
+          error: err => console.error('Failed to load now playing movies', err)
         });
 
-        // Now Popular
-        subscriptionPopular = apiService.getMoviesPopular(state.lang(), state.page()).subscribe({
+        // Popular Movies
+        subscriptionPopular.unsubscribe();
+        subscriptionPopular = apiService.getMoviesPopular(lang, page).subscribe({
           next: (data: any) => {
-            patchState(state, { popularMovies: data.results as (IMovie[]) });
             patchState(state, {
-              moviesIds: [
-                ...data.results.map((movie: IMovie) => movie.id)
-              ]
+              popularMovies: data.results as IMovie[],
+              moviesIds: data.results.map((movie: IMovie) => movie.id)
             });
           },
-          error: err => console.error('Failed to load API', err)
+          error: err => console.error('Failed to load popular movies', err)
         });
 
-        // Now Up Coming
-        subscriptionUpComing = apiService.getMoviesUpComing(state.lang(), state.page()).subscribe({
+        // Up Coming Movies
+        subscriptionUpComing.unsubscribe();
+        subscriptionUpComing = apiService.getMoviesUpComing(lang, page).subscribe({
           next: (data: any) => {
-            patchState(state, { upComingMovies: data.results as (IMovie[]) });
+            patchState(state, { upComingMovies: data.results as IMovie[] });
           },
-          error: err => console.error('Failed to load API', err)
+          error: err => console.error('Failed to load upcoming movies', err)
         });
 
-        // Now Tv Show
-        subscriptionUpComing = apiService.getTvShows(state.lang(), state.page()).subscribe({
+        // TV Shows
+        subscriptionTvShow.unsubscribe();
+        subscriptionTvShow = apiService.getTvShows(lang, page).subscribe({
           next: (data: any) => {
-            patchState(state, { tvShow: data.results as (IMovie[]) });
+            patchState(state, { tvShow: data.results as ITv[] });
           },
-          error: err => console.error('Failed to load API', err)
+          error: err => console.error('Failed to load TV shows', err)
         });
       });
     },
 
     onDestroy() {
-      subscription.unsubscribe()
-      subscriptionPopular.unsubscribe()
-      subscriptionUpComing.unsubscribe()
-      subscriptionTvShow.unsubscribe()
+      subscriptionNowPlaying.unsubscribe();
+      subscriptionPopular.unsubscribe();
+      subscriptionUpComing.unsubscribe();
+      subscriptionTvShow.unsubscribe();
     }
   })
 );

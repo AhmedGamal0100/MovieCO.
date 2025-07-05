@@ -6,13 +6,13 @@ import { AvatarModule } from 'primeng/avatar';
 import { Drawer } from 'primeng/drawer';
 import { NavToggleService } from '../../services/nav-toggle.service';
 import { LoginStore } from '../../store/login.store';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { GoogleAuthService } from '../../services/google-auth.service';
 import { IAccount } from '../../interfaces/account';
 
 @Component({
   selector: 'app-ver-nav',
-  imports: [DrawerModule, ButtonModule, Ripple, AvatarModule],
+  imports: [DrawerModule, ButtonModule, AvatarModule, RouterModule],
   templateUrl: './ver-nav.component.html',
   styleUrl: './ver-nav.component.scss'
 })

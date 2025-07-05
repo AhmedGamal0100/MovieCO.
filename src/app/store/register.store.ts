@@ -2,6 +2,10 @@ import { patchState, signalStore, withHooks, withMethods, withState } from '@ngr
 import { IAccount } from '../interfaces/account';
 import { effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { IMovie } from '../interfaces/movie';
+import { ITv } from '../interfaces/tv';
+import { IMovieDetails } from '../interfaces/movie-details';
+import { ITvDetails } from '../interfaces/tv-details';
 
 const initialProfileValue: IAccount[] = [];
 const initialImgsDefault: string[] = ['/imgs/profile-img-1.jpg', '/imgs/profile-img-2.jpg', '/imgs/profile-img-3.jpg', '/imgs/profile-img-4.jpg']
@@ -77,26 +81,62 @@ export const registerStore = signalStore(
                     accountsList: [...state.accountsList(), acc]
                 });
             },
-            toggleMovieWishlist: (movieId: number) => {
+            toggleMovieWishlist(movie: IMovieDetails) {
                 // Toggle movie wishlist for the logged-in user
                 const loggedAccountJSON = sessionStorage.getItem("user_id");
                 if (!loggedAccountJSON) return;
 
 
                 const loggedAccount = JSON.parse(loggedAccountJSON) as IAccount;
-                const movieIds = loggedAccount.wishList?.moviesIds ?? [];
+                const movies = loggedAccount.wishList?.movies ?? [];
+
+                const isAlreadyInWishlist = movies.some(m => m.id === movie.id);
 
                 // Check if the movieId is already in the wishlist
-                const updatedMovieIds = movieIds.includes(movieId)
-                    ? movieIds.filter(id => id !== movieId)
-                    : [...movieIds, movieId];
+                const updatedMovies = isAlreadyInWishlist
+                    ? movies.filter(m => m.id !== movie.id)
+                    : [...movies, movie];
 
                 // Update the logged account's wishlist
                 const updatedAccount: IAccount = {
                     ...loggedAccount,
                     wishList: {
-                        moviesIds: updatedMovieIds,
-                        tvShowsIds: loggedAccount.wishList?.tvShowsIds ?? []
+                        movies: updatedMovies,
+                        tvShows: loggedAccount.wishList?.tvShows ?? []
+                    }
+                };
+
+                sessionStorage.setItem("user_id", JSON.stringify(updatedAccount));
+
+                patchState(state, {
+                    accountsList: state.accountsList().map(acc =>
+                        acc.sub === loggedAccount.sub ? updatedAccount : acc
+                    )
+                });
+            },
+            toggleMovieWishlistTv(tvShow: ITvDetails) {
+                // Toggle movie wishlist for the logged-in user
+                const loggedAccountJSON = sessionStorage.getItem("user_id");
+                if (!loggedAccountJSON) return;
+
+
+                const loggedAccount = JSON.parse(loggedAccountJSON) as IAccount;
+                const tvShows = loggedAccount.wishList?.tvShows ?? [];
+
+                // Check if the movieId is already in the wishlist
+                const isAlreadyInWishlist = tvShows.some(show => show.id === tvShow.id);
+
+
+                const updatedTvShows = isAlreadyInWishlist
+                    ? tvShows.filter(show => show.id !== tvShow.id)
+                    : [...tvShows, tvShow];
+
+                // Update the logged account's wishlist
+                const updatedAccount: IAccount = {
+                    ...loggedAccount,
+                    wishList: {
+                        movies: loggedAccount.wishList?.movies ?? [],
+                        tvShows: updatedTvShows
                     }
                 };
 

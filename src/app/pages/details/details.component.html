@@ -3,7 +3,7 @@
         <div class="movie-details__bg"></div>
         <div class="movie-details__banner">
             <div class="">
-                <img class="backdrop" [src]="getBackdropUrl" alt="Backdrop" />
+                <img class="backdrop" [src]="getBackdropUrl()" alt="Backdrop" />
             </div>
         </div>
         <div class="movie-details__action-buttons">
@@ -26,33 +26,36 @@
 
         <div class="movie-details__poster w-4">
             <div class="movie-details__poster-img">
-                <img [src]="getPosterUrl" alt="{{ movieDetails.title }}" />
+                <img [src]="getPosterUrl()" alt="{{ movieDetails()?.title }}" />
             </div>
         </div>
 
         <div class="movie-details__tab-content w-4 flex flex-column gap-2">
-            <h1 class="movie-details__title">{{ movieDetails.title }}</h1>
+            <h1 class="movie-details__title">{{ movieDetails()?.title }}</h1>
             <div class="flex align-items-center mb-3 gap-2">
-                @if (movieDetails.adult) {
+                @if (movieDetails()?.adult) {
                 <h4 class="movie-details__adult">R</h4>
                 }
-                <h4 class="movie-details__date">{{ movieDetails.release_date }}</h4>
+                <h4 class="movie-details__date">{{ movieDetails()?.release_date }}</h4>
                 <div class="flex gap-2 align-items-center border-1 px-2 py-1 border-round-lg bg-white">
-                    <h4 class="movie-details__rate text-gray-900"> {{movieDetails.vote_average.toFixed(2)}}/10</h4>
+                    <h4 class="movie-details__rate text-gray-900"> {{formattedVoteAverage()}}/10</h4>
                     <i class="pi pi-star-fill text-gray-900"></i>
                 </div>
             </div>
             <div class="movie-details__genres">
-                @for (genre of movieDetails.genres; track genre.id) {
+                @for (genre of movieDetails()?.genres; track genre.id) {
                 <div>{{genre.name}}</div>
                 }
             </div>
-            <p>{{movieDetails.tagline}}</p>
-            <p>{{movieDetails.overview}}</p>
+            <div class="py-1">
+                <h4 class="text-lg">Episode Time: {{movieDetails()?.runtime}} min</h4>
+            </div>
+            <p>{{movieDetails()?.tagline}}</p>
+            <p>{{movieDetails()?.overview}}</p>
             <div>
                 <h4 class="text-2xl mb-2">Production Companies</h4>
                 <ul class="movie-details__production">
-                    @for (company of movieDetails.production_companies; track company.id) {
+                    @for (company of movieDetails()?.production_companies; track company.id) {
                     <li>{{company.name}}</li>
                     }
                 </ul>
@@ -60,9 +63,9 @@
         </div>
 
         <div class="movie-details__reviews w-4 p-5 flex flex-column jutify-content-center align-items-center">
-            @if (movieReviews.length > 0) {
+            @if (movieReviews().length > 0) {
             <p-accordion [value]="0">
-                @for (rev of movieReviews; track rev.id; let i = $index) {
+                @for (rev of movieReviews(); track rev.id; let i = $index) {
                 <p-accordion-panel [value]="rev.id">
                     <p-accordion-header>- Review {{i}}: {{ rev.author }}</p-accordion-header>
                     <p-accordion-content>
@@ -76,7 +79,7 @@
             }
         </div>
     </div>
-    @if (movieRecommendations > 0) {
+    @if (movieRecommendations() > 0) {
     <app-detail-similar-slider></app-detail-similar-slider>
     }
     <div class="card flex justify-center gap-2 text-2xl toast">

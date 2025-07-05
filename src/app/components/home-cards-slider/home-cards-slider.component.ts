@@ -4,13 +4,13 @@ import { ApiStore } from '../../store/api.store';
 import { IMovie } from '../../interfaces/movie';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
   standalone: true,
   selector: 'app-home-cards-slider',
-  imports: [HomeCardsComponent, Carousel, ButtonModule],
+  imports: [HomeCardsComponent, Carousel, ButtonModule, RouterModule],
   templateUrl: './home-cards-slider.component.html',
   styleUrl: './home-cards-slider.component.scss',
   providers: []

@@ -1,0 +1,14 @@
+.popular__container {
+    justify-content: center;
+    align-items: center;
+}
+
+.popular__card {
+    width: 20%;
+}
+
+@media (max-width: 576px) {
+    .popular__card {
+        width: 100%;
+    }
+}

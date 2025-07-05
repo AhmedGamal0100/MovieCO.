@@ -1,0 +1,96 @@
+:host {
+
+    .home-card {
+        width: 100%;
+        border: 2px solid var(--p-surface-300);
+        background-color: var(--p-surface-50);
+        transition: 0.1s;
+        border-radius: 1rem;
+        scale: 0.98;
+
+        html.my-add-dark & {
+            background-color: var(--p-surface-50);
+        }
+    }
+
+    .home-card:hover {
+        scale: 1;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .home-card__thumbnail {
+        // height: 350px;
+
+        img {
+            border-radius: 1rem;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .home-card__knob {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+
+        ::ng-deep .p-knob {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--p-surface-900);
+        }
+
+        ::ng-deep .p-knob .p-knob-text {
+            fill: white;
+            font-weight: 900;
+        }
+
+        ::ng-deep .p-knob .p-knob-range {
+            stroke: var(--p-surface-200);
+        }
+    }
+
+    .home-card__level-emerald {
+        ::ng-deep .p-knob .p-knob-value {
+            stroke: var(--p-emerald-500);
+        }
+    }
+
+    .home-card__level-yellow {
+        ::ng-deep .p-knob .p-knob-value {
+            stroke: var(--p-yellow-500);
+        }
+    }
+
+    .home-card__level-red {
+        ::ng-deep .p-knob .p-knob-value {
+            stroke: var(--p-red-500);
+        }
+    }
+
+    .home-card__content {
+        position: relative;
+        min-height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        transition: opacity 0.5s, transform 0.5s;
+        padding-block: 0.25rem;
+        padding-inline: 1.25rem;
+
+        h4 {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: larger;
+            text-align: center;
+            padding-block: 0.3rem;
+
+            html.my-add-dark & {
+                color: var(--p-surface-900);
+            }
+        }
+    }
+
+}

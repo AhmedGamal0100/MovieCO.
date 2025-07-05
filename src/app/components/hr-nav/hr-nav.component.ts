@@ -24,6 +24,7 @@ import { ApiStore } from '../../store/api.store';
 export class HrNavComponent {
   private _notificationStore = inject(NotificationStore);
   private _apiStore = inject(ApiStore);
+  // private _apiStoreTv = inject(api);
   notificationsList = signal<string[]>([]);
   notificationLength = signal<number>(0);
   navToggle = inject(NavToggleService);
@@ -52,6 +53,7 @@ export class HrNavComponent {
       this.notificationLength.set(
         this._notificationStore.notificationState().length
       );
+      this._apiStore.setLanguage(this.selectedLang()?.lang || 'en-US');
       this._apiStore.setLanguage(this.selectedLang()?.lang || 'en-US');
     })
   }

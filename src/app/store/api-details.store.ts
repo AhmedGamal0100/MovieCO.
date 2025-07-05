@@ -1,41 +1,40 @@
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { IAccount } from '../interfaces/account';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { effect, inject } from '@angular/core';
-import { ApiService } from '../services/api.service';
-import { IMovie } from '../interfaces/movie';
-import { Subscription } from 'rxjs';
 import { ApiDetailsService } from '../services/api-details.service';
 import { IMovieDetails } from '../interfaces/movie-details';
 import { IMovieDetailsReview } from '../interfaces/movie-details-review';
+import { IMovie } from '../interfaces/movie';
+import { Subscription } from 'rxjs';
+import { ITv } from '../interfaces/tv';
+import { ITvDetailsReview } from '../interfaces/tv-details-review';
+import { ITvDetails } from '../interfaces/tv-details';
 
-let subscription = new Subscription;
-let subscriptionReview = new Subscription;
-let subscriptionRecommendations = new Subscription;
+let detailedMovieSub = new Subscription();
+let reviewSub = new Subscription();
+let recommendationSub = new Subscription();
 
 export const ApiDetailsStore = signalStore(
   { providedIn: 'root' },
   withState({
-    detailedMovie: {},
-    detailedReview: [{}] as IMovieDetailsReview[],
-    detailedRecommendations: [{}] as IMovie[],
+    detailedMovie: null as IMovieDetails | null,
+    detailedReview: [] as IMovieDetailsReview[],
+    detailedRecommendations: [] as IMovie[],
     id: 0,
     lang: "en-US",
     page: 1
   }),
 
-  withMethods((state) => {
-    return {
-      setLanguage(lang: string) {
-        patchState(state, { lang });
-      },
-      setId(id: number) {
-        patchState(state, { id });
-      },
-      setPage(page: number) {
-        patchState(state, { page });
-      }
-    };
-  }),
+  withMethods((state) => ({
+    setLanguage(lang: string) {
+      patchState(state, { lang });
+    },
+    setId(id: number) {
+      patchState(state, { id });
+    },
+    setPage(page: number) {
+      patchState(state, { page });
+    }
+  })),
 
   withHooks({
     onInit(state) {
@@ -46,40 +45,41 @@ export const ApiDetailsStore = signalStore(
         const lang = state.lang();
         const page = state.page();
 
-        if (id) {
-          // Fetching detailed movie information
-          subscription.unsubscribe();
-          subscription = apiDetailsService.getDetailedMovie(id, lang).subscribe({
-            next: (data: any) => {
-              patchState(state, { detailedMovie: data as IMovieDetails });
-            },
-            error: err => console.error('Failed to load API', err)
-          });
+        if (!id) return;
 
-          // Fetching detailed reviews
-          subscriptionReview.unsubscribe();
-          subscriptionReview = apiDetailsService.getDetailedReviewMovie(id, lang, page).subscribe({
-            next: (data: any) => {
-              patchState(state, { detailedReview: data.results as IMovieDetailsReview[] });
-            },
-            error: err => console.error('Failed to load API', err)
-          });
+        // Fetch detailed movie
+        detailedMovieSub.unsubscribe();
+        detailedMovieSub = apiDetailsService.getDetailedMovie(id, lang).subscribe({
+          next: (data) => {
+            patchState(state, { detailedMovie: data as IMovieDetails });
+          },
+          error: err => console.error('Failed to load movie details', err)
+        });
 
-          // Fetching detailed recommendations
-          subscriptionRecommendations.unsubscribe();
-          subscriptionRecommendations = apiDetailsService.getDetailedRecommendations(id, lang, page).subscribe({
-            next: (data: any) => {
-              patchState(state, { detailedRecommendations: data.results as IMovie[] });
-            },
-            error: err => console.error('Failed to load API', err)
-          });
-        }
+        // Fetch reviews movie
+        reviewSub.unsubscribe();
+        reviewSub = apiDetailsService.getDetailedReviewMovie(id, lang, page).subscribe({
+          next: (data: any) => {
+            patchState(state, { detailedReview: data.results });
+          },
+          error: err => console.error('Failed to load reviews', err)
+        });
+
+        // Fetch recommendations movie
+        recommendationSub.unsubscribe();
+        recommendationSub = apiDetailsService.getDetailedRecommendations(id, lang, page).subscribe({
+          next: (data: any) => {
+            patchState(state, { detailedRecommendations: data.results });
+          },
+          error: err => console.error('Failed to load recommendations', err)
+        });
       });
     },
+    
     onDestroy() {
-      subscription.unsubscribe()
-      subscriptionReview.unsubscribe()
-      subscriptionRecommendations.unsubscribe();
+      detailedMovieSub.unsubscribe();
+      reviewSub.unsubscribe();
+      recommendationSub.unsubscribe();
     }
   })
 );
