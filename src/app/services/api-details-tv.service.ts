@@ -16,14 +16,14 @@ export class ApiDetailsTvService {
 
   getDetailedTv(id: number = 1278950, lang: string = "en_US"): Observable<Object> {
     return this._http.get(
-      `/api/tv/${id}?/language=${lang}`, this.headers);
+      `https://api.themoviedb.org/3/tv/${id}?/language=${lang}`, this.headers);
   }
   getDetailedReviewTv(id: number = 1278950, lang: string = "en_US", page: number = 1): Observable<Object> {
     return this._http.get(
-      `/api/tv/${id}/reviews?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/tv/${id}/reviews?language=${lang}&page=${page}`, this.headers);
   }
   getDetailedRecommendationsTv(id: number = 1278950, lang: string = "en_US", page: number = 1): Observable<Object> {
     return this._http.get(
-      `/api/tv/${id}/recommendations?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/tv/${id}/recommendations?language=${lang}&page=${page}`, this.headers);
   }
 }

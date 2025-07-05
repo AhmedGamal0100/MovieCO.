@@ -31,7 +31,7 @@ export class HomeMovieCardComponent {
   }
 
   loadVideo(movieId: number) {
-    this._http.get(`/api/movie/${movieId}/videos`, this.headers).subscribe({
+    this._http.get(`https://api.themoviedb.org/3/movie/${movieId}/videos`, this.headers).subscribe({
       next: (data: any) => {
         const trailer = data.results.find((video: any) => video.type === 'Trailer' && video.site === 'YouTube');
         if (trailer) {

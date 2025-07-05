@@ -15,19 +15,19 @@ export class ApiService {
 
   getMovies(lang: string = 'en-US', page: number = 1) {
     return this._http.get(
-      `/api/movie/now_playing?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/movie/now_playing?language=${lang}&page=${page}`, this.headers);
   }
   getMoviesPopular(lang: string = 'en-US', page: number = 1) {
     return this._http.get(
-      `/api/movie/popular?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/movie/popular?language=${lang}&page=${page}`, this.headers);
   }
   getMoviesUpComing(lang: string = 'en-US', page: number = 1) {
     return this._http.get(
-      `/api/movie/upcoming?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/movie/upcoming?language=${lang}&page=${page}`, this.headers);
   }
   getTvShows(lang: string = 'en-US', page: number = 1) {
     return this._http.get(
-      `/api/tv/top_rated?language=${lang}&page=${page}`, this.headers);
+      `https://api.themoviedb.org/3/tv/top_rated?language=${lang}&page=${page}`, this.headers);
   }
   // getDetailedMovie(id: number = 1278950) {
   //   return this._http.get(
